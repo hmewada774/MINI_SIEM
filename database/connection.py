@@ -15,8 +15,12 @@ class MongoDBConnection:
 
     def __new__(cls):
         if cls._instance is None:
-            cls._instance = super(MongoDBConnection, cls).__new__(cls)
-            cls._instance._init_connection()
+            instance = super(MongoDBConnection, cls).__new__(cls)
+            try:
+                instance._init_connection()
+                cls._instance = instance
+            except Exception:
+                raise
         return cls._instance
 
     def _init_connection(self):
